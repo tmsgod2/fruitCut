@@ -41,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         // 초기는 연습하지 않으므로 false로 초기화
         isPractice = false
 
-        val BPMObj = BPMThread()
-        BPMObj.start()
         // 이미지 저장 큐 링크드 리스트로 초기화
         imageQueue = LinkedList()
 
@@ -136,14 +134,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        BPMButton.setOnClickListener {
-            if(isRunning)
-                isRunning = false
-            else {
-                isRunning = true
-            }
-        }
     }
 
     // 이미지를 삭제할 시의 메소드
@@ -224,19 +214,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    inner class BPMThread:Thread() {
-
-        override fun run() {
-            while(isRunning){
-                SystemClock.sleep(1000)
-                Log.d("쓰레드",System.currentTimeMillis().toString())
-            }
-        }
-
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        isRunning = false
-    }
 }
 
