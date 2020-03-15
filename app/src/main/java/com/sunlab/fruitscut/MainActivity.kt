@@ -33,11 +33,10 @@ class MainActivity : AppCompatActivity() {
     // 터치시 생성된 순서대로 애니메이션을 실행시키기 위해 큐를 사용
     lateinit var imageQueue: Queue<ImageView>
 
-    var isRunning = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         // 초기는 연습하지 않으므로 false로 초기화
         isPractice = false
 
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             when(motionEvent.action){
                 MotionEvent.ACTION_DOWN->{
                     if(isPractice){
-                    imageQueue.poll()?.setImageResource(R.drawable.fruit_image_03) == null
+                    imageQueue.poll()?.setImageResource(fruitImageId+1) == null
                     if(imageQueue.peek()==null){
                         Toast.makeText(this,"연습완료!",Toast.LENGTH_SHORT).show()
                         deleteImage()
@@ -134,6 +133,15 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        BPMButton.setOnClickListener {
+            when(BPMObj.isRunning){
+                false -> BPMObj.start()
+                true -> BPMObj.pause()
+            }
+        }
+
+
     }
 
     // 이미지를 삭제할 시의 메소드
@@ -202,7 +210,7 @@ class MainActivity : AppCompatActivity() {
             // 이미지 객체 생성
             val image = ImageView(this)
             // 이미지 넣기
-            image.setImageResource(R.drawable.fruit_image_01 + fruitnum)
+            image.setImageResource(R.drawable.fruit_image_01+ fruitnum)
             image.layoutParams = imageParams
             linearLayout.addView(image)
             // 애니메이션 지정
