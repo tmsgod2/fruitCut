@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     var number:Int = 0
@@ -26,12 +27,14 @@ class MainActivity : AppCompatActivity() {
     // 과일 이미지 1번
     val fruitImageId = R.drawable.fruit_image_01
 
+    var currentImageId = 0
+
     //현재 연습이 진행중인지 확인하는 Boolean 변수
     var isPractice = false
 
     // 과일 이미지를 담는 큐
     // 터치시 생성된 순서대로 애니메이션을 실행시키기 위해 큐를 사용
-    lateinit var imageQueue: Queue<ImageView>
+    lateinit var imageQueue: Queue<fruitsData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +92,8 @@ class MainActivity : AppCompatActivity() {
             when(motionEvent.action){
                 MotionEvent.ACTION_DOWN->{
                     if(isPractice){
-                    imageQueue.poll()?.setImageResource(fruitImageId+1) == null
+                        val currentImage = imageQueue.poll()
+                    currentImage.image?.setImageResource(currentImage.imageId+1) == null
                     if(imageQueue.peek()==null){
                         Toast.makeText(this,"연습완료!",Toast.LENGTH_SHORT).show()
                         deleteImage()
@@ -139,6 +143,21 @@ class MainActivity : AppCompatActivity() {
                 false -> BPMObj.start()
                 true -> BPMObj.pause()
             }
+        }
+
+        fruitImageView.setOnTouchListener { view:View, motionEvent:MotionEvent ->
+            when(motionEvent.action){
+                MotionEvent.ACTION_DOWN -> {
+                    if(currentImageId <= 4) currentImageId += 1
+                    else currentImageId = 0
+
+                    if(currentImageId == 5) fruitImageView.setImageResource(R.drawable.random_image)
+                    else
+                    fruitImageView.setImageResource(fruitImageId+currentImageId*2+1)
+                }
+            }
+
+            true
         }
 
 
@@ -204,20 +223,25 @@ class MainActivity : AppCompatActivity() {
             weight = 1F
         }
 
+
+
         // 이미지 갯수만큼 반복
         var i = 0
         while(i<stack) {
+            var tmpImageId = currentImageId*2
+            if(currentImageId == 5)
+            tmpImageId = (0..4).random() * 2
             // 이미지 객체 생성
             val image = ImageView(this)
             // 이미지 넣기
-            image.setImageResource(R.drawable.fruit_image_01+ fruitnum)
+            image.setImageResource(fruitImageId + tmpImageId)
             image.layoutParams = imageParams
             linearLayout.addView(image)
             // 애니메이션 지정
             image.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,R.anim.rotate))
 
             // 이미지 큐에 넣기
-            imageQueue.add(image)
+            imageQueue.add(fruitsData(image,fruitImageId + tmpImageId))
             i++
         }
     }
