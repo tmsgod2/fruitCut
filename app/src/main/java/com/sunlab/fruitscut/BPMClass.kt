@@ -10,30 +10,53 @@ import java.util.*
 import kotlin.concurrent.timer
 import kotlin.concurrent.timerTask
 
-object BPMObj {
+object timeObj {
 
-
-    var time = 1000
+    var time = 0
     var isRunning = false
     var timerTask: Timer?=null
+    var sec = 0
+    var min = 0
+    var hour = 0
 
-    fun start(times:Int=1000){
-        isRunning = true
-        time = times
-        timerTask = timer(period = 20){
-            time++
-            val sec = time/100
-            val milli = time%100
-
-            Log.d("쓰레드", sec.toString())
-
+     fun start(){
+         timerTask = null
+         isRunning = true
+         allZero()
+         timerTask = timer(period = 1000){
+            sec++
+            if(sec==60){
+                min++
+                sec = 0
+            }
+            if(min == 60){
+                hour++
+                min = 0
+            }
         }
     }
     fun pause(){
         isRunning = false
         timerTask?.cancel()
+        timerTask = null
+    }
+
+    fun getTime():String{
+        return "$hour : $min : $sec"
+        allZero()
+    }
+
+    fun allZero(){
+        sec = 0
+        min = 0
+        hour = 0
     }
 
 
+
+
+
+}
+class BPMClass{
 
 }
