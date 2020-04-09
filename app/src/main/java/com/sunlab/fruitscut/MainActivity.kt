@@ -60,15 +60,13 @@ class MainActivity : AppCompatActivity() {
             isPractice = true
 
             // 연습 시간 측정 시작
-            timeObj.start()
         }
 
         // 연습종료 버튼 클릭 이벤트 생성
         deleteButton.setOnClickListener {
             // LinearLayout과 이미지 모두 제거
            deleteImage()
-            timeObj.pause()
-            Toast.makeText(this,"연습취소 ${timeObj.getTime()}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"연습취소",Toast.LENGTH_SHORT).show()
         }
 
         // 연습량 상승 버튼 클릭 이벤트 생성
@@ -99,8 +97,7 @@ class MainActivity : AppCompatActivity() {
                         val currentImage = imageQueue.poll()
                     currentImage.image?.setImageResource(currentImage.imageId+1) == null
                     if(imageQueue.peek()==null){
-                        timeObj.pause()
-                        Toast.makeText(this,"연습완료! ${timeObj.getTime()}",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"연습완료! ",Toast.LENGTH_SHORT).show()
                         deleteImage()
                         }
                     }
@@ -144,13 +141,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         BPMButton.setOnClickListener {
-            when(timeObj.isRunning){
-                false -> timeObj.start()
-                true -> {
-                    timeObj.pause()
-                    Toast.makeText(this,timeObj.getTime(),Toast.LENGTH_LONG).show()
-                }
-            }
         }
 
         fruitImageView.setOnTouchListener { view:View, motionEvent:MotionEvent ->
