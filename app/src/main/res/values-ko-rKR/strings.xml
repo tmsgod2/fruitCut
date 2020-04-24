@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">과일 컷!</string>
+    <string name="raise_button_name">증가</string>
+    <string name="reduce_button_name">감소</string>
+    <string name="practice_start_button_name">연습 시작</string>
+    <string name="practice_start_text">연습 시작</string>
+    <string name="practice_remove_button_name">지우기</string>
+    <string name="practice_complete_textview_name">연습 완료!</string>
+    <string name="current_time_text">현재 시간</string>
+    <string name="current_time_format_text">yyyy/MM/dd HH:mm:ss</string>
+</resources>

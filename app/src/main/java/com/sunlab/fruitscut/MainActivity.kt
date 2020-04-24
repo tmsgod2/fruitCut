@@ -44,13 +44,14 @@ class MainActivity : AppCompatActivity() {
     //시간 측정 변수
     var startTime = 0L
     var endTime = 0L
-    val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초");
+    lateinit var formatter:DateTimeFormatter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        formatter = DateTimeFormatter.ofPattern(getString(R.string.current_time_format_text));
         complete_textView.visibility = View.GONE
         // 초기는 연습하지 않으므로 false로 초기화
         isPractice = false
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             deleteImage()
             startTime = System.currentTimeMillis();
 
-            Toast.makeText(this,"연습시작\n"+LocalDateTime.now().format(formatter),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,getString(R.string.practice_start_text).toString()+"\n"+LocalDateTime.now().format(formatter),Toast.LENGTH_SHORT).show()
 
             // 연습할 횟수에 따라 LinearLayout과 이미지 생성
             // LinearLayout은 연습 5개당 하나씩 증가
@@ -113,8 +114,8 @@ class MainActivity : AppCompatActivity() {
                         coloredImageQueue?.offer(currentImage)
                         if(imageQueue.peek()==null){
                             endTime = System.currentTimeMillis();
-                            Toast.makeText(this,"연습완료! ${(endTime-startTime)/(1000*60*60)}:${(endTime-startTime)/(1000*60)}:${(endTime-startTime)/1000}" +
-                                    "\n현재시간 : ${LocalDateTime.now().format(formatter)}",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this,"${getString(R.string.practice_complete_textview_name)} ${(endTime-startTime)/(1000*60*60)}:${(endTime-startTime)/(1000*60)}:${(endTime-startTime)/1000}" +
+                                    "\n${getString(R.string.current_time_text)}\n : ${LocalDateTime.now().format(formatter)}",Toast.LENGTH_SHORT).show()
                             EndPractice()
 //                            deleteImage()
                             isPractice = false

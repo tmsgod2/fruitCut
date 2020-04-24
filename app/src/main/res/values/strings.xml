@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FruitsCut</string>
+    <string name="raise_button_name">raise</string>
+    <string name="reduce_button_name">reduce</string>
+    <string name="practice_start_button_name">start</string>
+    <string name="practice_start_text">start</string>
+    <string name="practice_remove_button_name">remove</string>
+    <string name="practice_complete_textview_name">Complete!</string>
+    <string name="current_time_text">current time</string>
+    <string name="current_time_format_text">dd/MM/yyyy HH:mm:ss</string>
 </resources>
