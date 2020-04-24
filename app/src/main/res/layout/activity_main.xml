@@ -150,4 +150,17 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/fruit_image_02" />
 
+    <TextView
+        android:id="@+id/complete_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="연습 완료!"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/parentLinear"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

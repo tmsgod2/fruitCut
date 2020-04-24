@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -37,22 +39,25 @@ class MainActivity : AppCompatActivity() {
     // 과일 이미지를 담는 큐
     // 터치시 생성된 순서대로 애니메이션을 실행시키기 위해 큐를 사용
     lateinit var imageQueue: Queue<fruitsData>
+    lateinit var coloredImageQueue: Queue<fruitsData>
 
     //시간 측정 변수
     var startTime = 0L
     var endTime = 0L
-
     val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초");
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        complete_textView.visibility = View.GONE
         // 초기는 연습하지 않으므로 false로 초기화
         isPractice = false
 
         // 이미지 저장 큐 링크드 리스트로 초기화
         imageQueue = LinkedList()
+        coloredImageQueue = LinkedList()
 
         // 시작버튼 클릭 이벤트 생성
         startButton.setOnClickListener {
@@ -76,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             // LinearLayout과 이미지 모두 제거
            deleteImage()
             startTime = 0L
-            Toast.makeText(this,"연습취소",Toast.LENGTH_SHORT).show()
         }
 
         // 연습량 상승 버튼 클릭 이벤트 생성
@@ -105,12 +109,15 @@ class MainActivity : AppCompatActivity() {
                 MotionEvent.ACTION_DOWN->{
                     if(isPractice){
                         val currentImage = imageQueue.poll()
-                    currentImage.image?.setImageResource(currentImage.imageId+1) == null
-                    if(imageQueue.peek()==null){
-                        endTime = System.currentTimeMillis();
-                        Toast.makeText(this,"연습완료! ${(endTime-startTime)/(1000*60*60)}:${(endTime-startTime)/(1000*60)}:${(endTime-startTime)/1000}" +
-                                "\n현재시간 : ${LocalDateTime.now().format(formatter)}",Toast.LENGTH_SHORT).show()
-                        deleteImage()
+                        currentImage.image?.setImageResource(currentImage.imageId+1)
+                        coloredImageQueue?.offer(currentImage)
+                        if(imageQueue.peek()==null){
+                            endTime = System.currentTimeMillis();
+                            Toast.makeText(this,"연습완료! ${(endTime-startTime)/(1000*60*60)}:${(endTime-startTime)/(1000*60)}:${(endTime-startTime)/1000}" +
+                                    "\n현재시간 : ${LocalDateTime.now().format(formatter)}",Toast.LENGTH_SHORT).show()
+                            EndPractice()
+//                            deleteImage()
+                            isPractice = false
                         }
                     }
                 }
@@ -180,6 +187,9 @@ class MainActivity : AppCompatActivity() {
         // 이미지 큐의 모든 원소가 없어질 때 까지 반복
         while(imageQueue.poll() != null){
         }
+        while(coloredImageQueue.poll() != null){
+        }
+        complete_textView.visibility = View.GONE
     }
 
     // 이미지를 넣을 LinearLayout 생성
@@ -249,6 +259,14 @@ class MainActivity : AppCompatActivity() {
             imageQueue.add(fruitsData(image,fruitImageId + tmpImageId))
             i++
         }
+    }
+
+    fun EndPractice(){
+        while(coloredImageQueue.peek() != null){
+            val image = coloredImageQueue.poll()
+            image.image.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,R.anim.rotate2));
+        };
+        complete_textView.visibility = View.VISIBLE
     }
 
 }
